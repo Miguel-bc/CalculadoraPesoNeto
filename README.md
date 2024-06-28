@@ -21,6 +21,7 @@ Clona el repositorio:
 ```sh
 git clone https://github.com/tu-usuario/analizador-peso-brocoli.git
 cd analizador-peso-brocoli
+```
 
 ### 2. Instalar Dependencias
 Abre R o RStudio y ejecuta el siguiente comando para instalar las dependencias necesarias:
@@ -43,7 +44,7 @@ source("src/r/01_cargar_datos.R")
 ### 5. Consultar Documentación Adicional
 Consulta la documentación adicional en /docs para más detalles sobre el uso y la estructura del proyecto.
 
-Recursos Adicionales
+### Recursos Adicionales
 Documentación de R
 Introducción a dplyr
 Guía de ggplot2
