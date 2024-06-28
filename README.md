@@ -19,7 +19,7 @@ Este proyecto contiene ejemplos y demostraciones de análisis de peso de piezas 
 ### 1. Clonar el Repositorio
 Clona el repositorio:
 ```sh
-git clone https://github.com/tu-usuario/CalculadoraPesoNeto.git
+git clone [https://github.com/tu-usuario/CalculadoraPesoNeto.git](https://github.com/Miguel-bc/CalculadoraPesoNeto.git)
 cd analizador-peso-brocoli
 ```
 
