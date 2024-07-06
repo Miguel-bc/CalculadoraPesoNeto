@@ -16,6 +16,7 @@ fluidPage(
       sliderInput("Salidas", "Rangos Programados", 
                   min = 1, max = 20, value = 1),
       actionButton("resetTbl", "Nueva Tabla"),
+      actionButton("saveTbl", "Guardar Tabla"),
     ),
     mainPanel(
       tabsetPanel(

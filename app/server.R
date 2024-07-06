@@ -1,6 +1,7 @@
 
 library(shiny)
 library(DT)
+library(openxlsx)
 
 # Carga archivo de datos
 
@@ -53,19 +54,35 @@ function(input, output, session) {
   })
   
   # Observar eventos del botón y sustituir formatos
+  
   observeEvent(input$resetTbl, {
-    nuevos_formatos <- nueva_tabla_formatos()
+    formatos <<- nueva_tabla_formatos()
     output$TablaFormatos <- renderDT({
-      datatable(nuevos_formatos, 
-                editable = TRUE, 
-                rownames = FALSE, 
-                options = list(
-                  dom = 't',
-                  scrollY = "500px",  # Ajusta según el espacio que quieras ocupar
-                  scrollCollapse = TRUE,
-                  paging = FALSE
-                ))
+      datatable(formatos, editable = TRUE, rownames = FALSE, options = list(dom = 't'))
     })
+  })
+  
+  # Observar eventos de edición en la tabla de formatos
+  
+  observeEvent(input$TablaFormatos_cell_edit, {
+    info <- input$TablaFormatos_cell_edit
+    row <- info$row 
+    col <- info$col + 1  # Sumar 1 porque DT maneja índices base 0
+    value <- info$value
+    formatos[row, col] <<- DT::coerceValue(value, formatos[row, col])
+    # Actualizar la tabla renderizada
+    output$TablaFormatos <- renderDT({
+      datatable(formatos, editable = TRUE, rownames = FALSE, options = list(dom = 't'))
+    })
+  })
+  
+  # Observar enventos del botón guardar tabla
+  
+  observeEvent(input$saveTbl,{
+    archivo <- "Formatos.xlsx"
+    camino <- file.path("..", "data", archivo)
+    hoja <- "Formatos"    
+    write.xlsx(formatos, file = camino, sheetName = hoja, rowNames = FALSE)
   })
   
 }
