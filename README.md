@@ -50,10 +50,7 @@ Para ejecutar la aplicación, asegúrate de tener instaladas las siguientes bibl
 
 ```r
 install.packages(c("shiny", "shinythemes", "readxl", "DT", "openxlsx", "ggplot2", "tidyverse", "shinyalert"))
-
-Introducción a dplyr
-Guía de ggplot2
-
+```
 ### Licencia
 Este proyecto está bajo la licencia MIT. Consulta el archivo LICENSE para más detalles.
 
