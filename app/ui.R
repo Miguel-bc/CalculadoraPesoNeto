@@ -1,3 +1,8 @@
+
+library(shiny)
+library(shinythemes)
+library(readxl)
+
 # Carga archivo de datos
 archivo <- "Pesos.xlsx"
 camino <- file.path("..", "data", archivo)
@@ -6,19 +11,18 @@ pesos <- readxl::read_excel(camino, hoja)
 pesos$Formato <- "Sin Formato"
 pesos$Orden <- "0"
 
-library(shiny)
-library(shinythemes)
-library(readxl)
-
 # Define UI for application that draws a histogram
 
 fluidPage(
 
   theme = shinytheme("cerulean"),
+  
+  tags$head(
+    tags$title("Calculadora Rango Pesos")
+  ),
+  
   sidebarLayout(
     sidebarPanel(
-      sliderInput("SalidasDiscriminador", "Salidas Discriminador", 
-                  min = 6, max = 10, value = 8),
       sliderInput("Salidas", "Rangos Programados", 
                   min = 1, max = 20, value = 1),
       selectInput(
@@ -30,9 +34,8 @@ fluidPage(
       ),
       checkboxInput("eliminar_outliers", "Eliminar outliers", FALSE),
       fluidRow(
-        column(4,actionButton("resetTbl", "Nueva Tabla")),
-        column(4,actionButton("saveTbl", "Guardar Tabla")),
-        column(4,actionButton("calcFormato","Calcula Formatos"))
+        column(6,actionButton("resetTbl", "Nueva Tabla Formatos")),
+        column(6,actionButton("saveTbl", "Guardar Tabla Formatos"))
       )
       
     ),
