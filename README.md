@@ -51,6 +51,23 @@ Para ejecutar la aplicación, asegúrate de tener instaladas las siguientes bibl
 ```r
 install.packages(c("shiny", "shinythemes", "readxl", "DT", "openxlsx", "ggplot2", "tidyverse", "shinyalert"))
 ```
+Luego, guarda el código de la aplicación en un archivo llamado app.R y ejecútalo en RStudio o en la consola de R con:
+
+shiny::runApp("ruta/a/tu/app.R")
+
+## Uso
+- Selecciona el número de rangos en el control deslizante (sliderInput).
+- Elige el número de partida para filtrar los datos en el selectInput.
+- Activa o desactiva la eliminación de outliers según sea necesario.
+- Haz clic en los botones para reiniciar la tabla de formatos o guardar los cambios.
+- Consulta las pestañas en el panel principal para visualizar estadísticas, formatos y datos de pesos.
+  
+## Contribuciones
+Las contribuciones son bienvenidas. Por favor, abre un issue o envía un pull request si deseas colaborar en el proyecto.
+
+## Contacto
+Para más información, puedes contactarme a través de tu correo electrónico o en mi perfil de GitHub.
+
 ### Licencia
 Este proyecto está bajo la licencia MIT. Consulta el archivo LICENSE para más detalles.
 
