@@ -1,50 +1,56 @@
-# Proyecto Analizador de Peso de Brócoli
+# Calculadora Rango Pesos
 
 ## Descripción
-Este proyecto contiene ejemplos y demostraciones de análisis de peso de piezas de brócoli, extrapolando datos para determinar el peso neto de las piezas después de cortar el tronco. El objetivo es identificar el peso mínimo y máximo utilizado y aplicar esta información para predecir el peso de otras piezas en diferentes partidas.
 
-## Estructura del Proyecto
-- `/data`: Contiene los archivos de datos de las partidas de brócoli.
-- `/src/r`: Scripts en R para el análisis de datos, incluyendo funciones, modelos y visualizaciones.
-- `/src/scripts`: Scripts de automatización y configuración.
-- `/docs`: Documentación del proyecto, incluyendo diagramas, guías y análisis.
+**Calculadora Rango Pesos** es una aplicación interactiva desarrollada en **Shiny** para analizar y gestionar datos relacionados con pesos de productos. Esta herramienta permite visualizar estadísticas, ajustar formatos y gestionar datos de manera dinámica, proporcionando una interfaz intuitiva para el análisis y la edición de datos.
 
-## Requisitos Previos
-- R (versión 4.0 o superior)
-- RStudio (opcional, pero recomendado)
-- Git
+## Funcionalidades
 
-## Cómo Configurar el Proyecto
+### Interfaz de Usuario
 
-### 1. Clonar el Repositorio
-Clona el repositorio:
-```sh
-git clone https://github.com/Miguel-bc/CalculadoraPesoNeto.git
-```
+La aplicación cuenta con una interfaz organizada en los siguientes componentes:
 
-### 2. Instalar Dependencias
-Abre R o RStudio y ejecuta el siguiente comando para instalar las dependencias necesarias:
+- **Panel de Control (Sidebar)**
+  - **Rangos Programados (`sliderInput`)**: Selección del número de rangos para los formatos.
+  - **Número de Partida (`selectInput`)**: Selección para filtrar los datos según el número de partida.
+  - **Eliminar Outliers (`checkboxInput`)**: Activar o desactivar la eliminación de valores atípicos.
+  - **Botones (`actionButton`)**:
+    - **Nueva Tabla Formatos**: Reinicia la tabla de formatos.
+    - **Guardar Tabla Formatos**: Guarda los cambios realizados en la tabla de formatos.
 
-install.packages(c("dplyr", "ggplot2", "readr"))
+- **Panel Principal (Main Panel)**
+  - **Estadísticas**: 
+    - Histograma del porcentaje del peso neto total por formato.
+    - Boxplot de pesos brutos por formato.
+  - **Formatos**: 
+    - Visualización y edición de la tabla de formatos.
+  - **Pesos Partida**: 
+    - Datos de pesos filtrados según la selección de partida.
 
-### 3. Descargar los Archivos de Datos
-Coloca tus archivos de datos de las partidas de brócoli en la carpeta /data. Si tienes archivos de ejemplo, puedes descargarlos y colocarlos aquí.
+### Lógica del Servidor
 
-### 4. Ejecutar los Scripts de Análisis
-Ejecuta los scripts en /src/r para realizar el análisis. Abre R o RStudio y ejecuta los scripts en el siguiente orden:
+La aplicación maneja la lógica del servidor para procesar y actualizar los datos en función de las interacciones del usuario:
 
-01_cargar_datos.R - Carga los datos desde los archivos en /data.
-02_analizar_peso.R - Realiza el análisis de peso y genera visualizaciones.
-03_extrapolar_peso.R - Extrapola los datos para predecir pesos en nuevas partidas.
-Por ejemplo, para ejecutar 01_cargar_datos.R:
+- **Filtrado de Datos**: Los datos se filtran por partida y se eliminan los outliers si se selecciona la opción correspondiente.
+- **Cálculo de Formatos y Orden**: Se calculan formatos y órdenes para cada peso neto basado en los rangos definidos en la tabla de formatos.
+- **Actualización Dinámica**: Actualización automática de la lista de partidas y el número de rangos.
+- **Reinicio y Guardado de Tablas**: Funcionalidad para reiniciar o guardar los cambios en la tabla de formatos.
 
-source("src/r/01_cargar_datos.R")
+### Gráficos y Tablas
 
-### 5. Consultar Documentación Adicional
-Consulta la documentación adicional en /docs para más detalles sobre el uso y la estructura del proyecto.
+- **Histograma del Peso Neto por Formato**: Muestra la distribución del peso neto total por formato en forma de barras.
+- **Boxplot de Pesos Brutos**: Visualiza la distribución de los pesos brutos por formato.
+- **Tabla de Formatos**: Permite visualizar y editar la tabla de formatos.
+- **Tabla de Pesos**: Muestra los datos de pesos filtrados.
+- **Tabla Receta**: Resume los rangos de peso bruto para cada formato.
 
-### Recursos Adicionales
-Documentación de R
+## Instalación
+
+Para ejecutar la aplicación, asegúrate de tener instaladas las siguientes bibliotecas de R:
+
+```r
+install.packages(c("shiny", "shinythemes", "readxl", "DT", "openxlsx", "ggplot2", "tidyverse", "shinyalert"))
+
 Introducción a dplyr
 Guía de ggplot2
 
