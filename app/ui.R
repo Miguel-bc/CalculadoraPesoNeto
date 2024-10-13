@@ -29,8 +29,8 @@ fluidPage(
         inputId = "partida_select",
         label = "Selecciona Número de Partida:",
         choices = "Todas",  # Se actualizará dinámicamente
-        selected = "Todas"  
-        
+        selected = "Todas",
+        multiple = TRUE
       ),
       checkboxInput("eliminar_outliers", "Eliminar outliers", FALSE),
       sliderInput("Rigidez", "Rigidez", 

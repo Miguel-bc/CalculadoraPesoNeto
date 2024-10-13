@@ -114,9 +114,9 @@ server <- function(input, output, session) {
     
     print(input$partida_select)
     
-    if (input$partida_select != "Todas"){
+    if (!is.null(input$partida_select) && !"Todas" %in% input$partida_select){
       datos <- datos %>% 
-        filter(Partida == input$partida_select)
+        filter(Partida %in% input$partida_select)
     }
     
     return(datos)
