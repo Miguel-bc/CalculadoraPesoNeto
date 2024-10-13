@@ -33,6 +33,8 @@ fluidPage(
         
       ),
       checkboxInput("eliminar_outliers", "Eliminar outliers", FALSE),
+      sliderInput("Rigidez", "Rigidez", 
+                  min = 1, max = 1.5, value = 1.5),
       fluidRow(
         column(6,actionButton("resetTbl", "Nueva Tabla Formatos")),
         column(6,actionButton("saveTbl", "Guardar Tabla Formatos"))

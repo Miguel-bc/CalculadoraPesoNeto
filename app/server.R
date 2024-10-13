@@ -26,23 +26,42 @@ calculo_orden <- function(peso, tabla_formatos){
 }
 
 # Funcion para eliminar outliers
-eliminar_outliers <- function(df, columna) {
+eliminar_outliers <- function(df, columna, rigidez) {
   # Agrupar por Orden y Formato
+  
+  lista_partidas <- df %>%
+    group_by(Partida, Formato) %>%
+    summarise(Pesos = list(.data[[columna]])) %>% 
+    ungroup() %>% 
+    mutate(
+      min_outlier = map_dbl(Pesos, ~ factor_outlier(.x, "Min", rigidez)),
+      max_outlier = map_dbl(Pesos, ~ factor_outlier(.x, "Max", rigidez))
+    )
+  
+  return(lista_partidas)
+}
 
-df_filtrado <- df %>%
-  group_by(Orden, Formato) %>%
-  filter({
-    # Calcular Q1, Q3 e IQR para cada grupo
-    Q1 <- quantile(.data[[columna]], 0.25, na.rm = TRUE)
-    Q3 <- quantile(.data[[columna]], 0.75, na.rm = TRUE)
-    IQR <- Q3 - Q1
-    
-    # Filtrar datos dentro del rango ajustado por el coeficiente
-    .data[[columna]] >= (Q1 - 1.5 * IQR) & .data[[columna]] <= (Q3 + 0.5 * IQR)
-  }) %>%
-  ungroup()
-
-return(df_filtrado)
+# Funcion para determinar el minimo outlier o el maximo outlier de una lista de valores
+factor_outlier <- function(Pesos, Tipo, Rigidez) {
+  
+  valores = unlist(Pesos)
+  
+  Q3 <- quantile(valores, 0.75, na.rm = TRUE)
+  Q1 <- quantile(valores, 0.25, na.rm = TRUE)
+  
+  IQR <- Q3 - Q1
+  
+  min_outlier <- Q1 - Rigidez * IQR
+  max_outlier <- Q3 + Rigidez * IQR
+  
+  
+  if (Tipo == "Min"){
+    return(min_outlier)
+  }
+  
+  if (Tipo == "Max"){
+    return(max_outlier)
+  }
 }
 
 # Carga archivo de datos
@@ -72,17 +91,6 @@ server <- function(input, output, session) {
   reactive_pesos_datos_filtrados <- reactive({
     
     datos <- reactive_pesos$data
-
-    if (input$eliminar_outliers) {
-      datos <- eliminar_outliers(datos, "Bruto")
-    } 
-    
-    print(input$partida_select)
-    
-    if (input$partida_select != "Todas"){
-      datos <- datos %>% 
-        filter(Partida == input$partida_select)
-    }
     
     # Calcular el formato basado en el peso neto
     datos$Formato <- sapply(datos$Neto, function(peso_neto) {
@@ -93,6 +101,23 @@ server <- function(input, output, session) {
     datos$Orden <- sapply(datos$Neto, function(peso_neto) {
       calculo_orden(peso_neto, tabla_formatos = reactive_formatos$data)
     })
+    
+    outlier_partida <- eliminar_outliers(datos, "Bruto", input$Rigidez)
+    datos <- merge(datos, outlier_partida, by = c("Partida","Formato"), all.x = TRUE)
+    datos <- datos %>% 
+      mutate(Outlier = ifelse(Bruto < min_outlier | Bruto > max_outlier, "Si", "No")) %>% 
+      select(Partida, id, Bruto, Neto, Formato, Orden, Outlier)
+
+    if (input$eliminar_outliers) {
+      datos <- datos %>%  filter(datos$Outlier == "No")
+    } 
+    
+    print(input$partida_select)
+    
+    if (input$partida_select != "Todas"){
+      datos <- datos %>% 
+        filter(Partida == input$partida_select)
+    }
     
     return(datos)
   })
