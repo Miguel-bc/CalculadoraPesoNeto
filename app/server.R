@@ -5,6 +5,8 @@ library(ggplot2)
 library(tidyverse)
 library(shinyalert)
 
+source("..\\src\\CargaPesosReales.R")
+
 # Función para determinar en qué rango se encuentra un peso
 calculo_formato <- function(peso, tabla_formatos){
   for(i in 1:nrow(tabla_formatos)){
@@ -71,6 +73,10 @@ hoja <- "Pesos"
 pesos <- readxl::read_excel(camino, hoja)
 pesos$Formato <- "Sin Formato"
 pesos$Orden <- "0"
+print(glimpse(pesos))
+
+pesos_real <- CargaPesosReales()
+print(glimpse(pesos_real))
 
 # Cargar Tabla Formatos
 archivo <- "Formatos.xlsx"
@@ -83,7 +89,16 @@ server <- function(input, output, session) {
   
   # Hacer reactivas las tablas capturadas
   
-  reactive_pesos <- reactiveValues(data = pesos)
+  reactive_pesos <- reactiveValues(data = pesos_real)
+
+  observe({
+    if (input$seleccion_pesos_real) {
+      reactive_pesos$data <- pesos_real
+    } else {
+      reactive_pesos$data <- pesos
+    }
+  })
+  
   reactive_formatos <- reactiveValues(data = formatos)
   
   # Funcion Reactiva para el filtrado de la tabla pesos
@@ -276,3 +291,4 @@ server <- function(input, output, session) {
   })
   
 }
+

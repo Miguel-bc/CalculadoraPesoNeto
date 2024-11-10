@@ -38,7 +38,8 @@ fluidPage(
       fluidRow(
         column(6,actionButton("resetTbl", "Nueva Tabla Formatos")),
         column(6,actionButton("saveTbl", "Guardar Tabla Formatos"))
-      )
+      ),
+      checkboxInput("seleccion_pesos_real", "Pesos Reales", TRUE)
       
     ),
     
